@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise Public School</title>
+    <!-- Internal CSS: Styling and Responsiveness -->
+    <style>
+        :root {
+            --primary: #1976d2;
+            --light: #fff;
+            --secondary: #f5f6fa;
+            --dark: #222;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--secondary);
+            color: var(--dark);
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--primary);
+            color: var(--light);
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 70px;
+        }
+        .school-name {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 25px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--light);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #e3e3e3;
+        }
+
+        /* Hamburger for Mobile */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: .3s;
+        }
+
+        /* Main sections */
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        section {
+            margin: 40px 0;
+        }
+
+        /* Home Section */
+        #home {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            min-height: 340px;
+        }
+        .home-text {
+            flex: 1 1 320px;
+        }
+        .home-text h1 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        .home-text p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+        /* Interactive welcome button */
+        #welcome-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background .3s, color .3s;
+        }
+        #welcome-btn:hover {
+            background: #1250a3;
+            color: #f2f2f2;
+        }
+
+        .banner-img {
+            flex: 1 1 280px;
+            text-align: right;
+        }
+        .banner-img img {
+            max-width: 340px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 6px 28px rgba(25, 118, 210, 0.12);
+        }
+
+        /* About Section */
+        #about {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 25px 20px;
+            box-shadow: 0 2px 12px rgba(25, 118, 210, 0.05);
+        }
+        #about h2 { color: var(--primary);}
+        
+        /* Courses Section */
+        #courses {
+            padding: 12px 0;
+        }
+        .courses-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        .course {
+            background: var(--light);
+            flex: 1 1 240px;
+            min-width: 220px;
+            padding: 22px 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(25, 118, 210, 0.06);
+            transition: transform .2s;
+        }
+        .course:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.20);
+        }
+        .course h3 {
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        /* Contact Section */
+        #contact {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 22px 18px;
+            max-width: 500px;
+            box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+        }
+        #contact h2 { color: var(--primary);}
+        .contact-form label {
+            display: block;
+            margin: 14px 0 5px 2px;
+            font-weight: 500;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px 8px;
+            border: 1px solid #b0c6e0;
+            border-radius: 5px;
+            font-size: 1rem;
+            resize: vertical;
+            background: #f8fafc;
+        }
+        .contact-form textarea {
+            height: 80px;
+        }
+        .contact-form button {
+            margin-top: 16px;
+            padding: 11px 22px;
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background .3s;
+        }
+        .contact-form button:hover {
+            background: #144e93;
+        }
+        .form-message {
+            color: green;
+            margin-top: 14px;
+            font-weight: 500;
+        }
+        .form-error {
+            color: #d32f2f;
+            margin-top: 7px;
+            font-size: .97rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 18px;
+            background: var(--primary);
+            color: var(--light);
+            font-size: 1rem;
+            margin-top: 40px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            main { padding: 0 10px; }
+            .navbar { flex-direction: column; height: auto; align-items: flex-start;}
+        }
+        @media (max-width: 700px) {
+            #home {
+                flex-direction: column-reverse;
+                min-height: unset;
+            }
+            .home-text,.banner-img { text-align: left; }
+            .banner-img { text-align: center; }
+        }
+        @media (max-width: 600px) {
+            .navbar { flex-direction: row; height: auto; }
+            nav ul {
+                flex-direction: column;
+                background: var(--primary);
+                position: absolute;
+                top: 70px;
+                right: 0;
+                left: 0;
+                width: 100%;
+                display: none;
+                z-index: 1000;
+            }
+            nav ul.active { display: flex;}
+            nav ul li { margin: 15px 0; text-align: center;}
+            .hamburger {
+                display: flex;
+                margin-left: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="navbar">
+            <div class="school-name">Sunrise Public School</div>
+            <nav>
+                <ul id="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <!-- Hamburger icon for mobile -->
+                <div class="hamburger" id="hamburger" aria-label="Open navigation menu" tabindex="0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Home Section -->
+        <section id="home">
+            <div class="home-text">
+                <h1>Welcome to Sunrise Public School</h1>
+                <p>
+                    We believe in nurturing young minds and empowering them with knowledge, values, and skills for life. 
+                    Join our vibrant community and let your child embark on a journey of excellence!
+                </p>
+                <!-- Interactive Button -->
+                <button id="welcome-btn">Show Welcome Message</button>
+                <div id="welcome-msg" style="margin-top: 15px; display:none;"></div>
+            </div>
+            <div class="banner-img">
+                <!-- Free image, replace src with your chosen school image if desired -->
+                <img src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=700&q=80" 
+                     alt="School Building Banner">
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <h2>About Us</h2>
+            <p>
+                Sunrise Public School was established in 2005 with a mission to provide holistic education with modern values.
+                Our dedicated faculty and well-equipped infrastructure ensure an engaging and safe learning environment.
+            </p>
+            <p>
+                We focus on academic excellence, extracurricular growth, and character development to help every student reach their full potential.
+            </p>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses">
+            <h2>Our Courses</h2>
+            <div class="courses-list">
+                <div class="course">
+                    <h3>Science & Mathematics</h3>
+                    <p>
+                        In-depth science and math curriculum with practical experiments to ignite curiosity and logical thinking.
+                    </p>
+                </div>
+                <div class="course">
+                    <h3>Arts & Languages</h3>
+                    <p>
+                        Creative subjects including literature, visual arts, Hindi & English, helping students express themselves.
+                    </p>
+                </div>
+                <div class="course">
+                    <h3>Sports & Life Skills</h3>
+                    <p>
+                        Focus on health, teamwork, and essential life skills through sports, yoga, and activity-based learning.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <form id="contact-form" class="contact-form" autocomplete="off" novalidate>
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message *</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Send Message</button>
+                <div id="form-error" class="form-error"></div>
+                <div id="form-message" class="form-message"></div>
+            </form>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        &copy; 2026 Sunrise Public School. All rights reserved.
+    </footer>
+
+    <!-- Internal JavaScript: Interactivity & Form Validation -->
+    <script>
+    // Mobile Navigation Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+    });
+    // Optional: allow hamburger toggle with Enter key (accessibility)
+    hamburger.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') navLinks.classList.toggle('active');
+    });
+
+    // Smooth scroll for navigation links (optional for smoother UX)
+    document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            navLinks.classList.remove('active'); // close mobile menu
+            // Smooth scroll
+            if (this.hash) {
+                const section = document.querySelector(this.hash);
+                if (section) {
+                    e.preventDefault();
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    // Contact Form Validation and Submission
+    const contactForm = document.getElementById('contact-form');
+    const formError = document.getElementById('form-error');
+    const formMessage = document.getElementById('form-message');
+
+    // Email validation function (basic)
+    function isValidEmail(email) {
+        // Simple regex for validation
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form from submitting
+
+        // Get form values
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        // Reset error/message
+        formError.textContent = '';
+        formMessage.textContent = '';
+
+        // Basic validation
+        if (!name || !email || !message) {
+            formError.textContent = "Please fill in all fields.";
+            return;
+        }
+        if (!isValidEmail(email)) {
+            formError.textContent = "Please enter a valid email address.";
+            return;
+        }
+
+        // If validation passes
+        formError.textContent = '';
+        formMessage.textContent = "Message sent successfully!";
+        // Optionally, show an alert as requested
+        alert("Thank you for contacting us, " + name + "! We have received your message.");
+        // Reset form fields
+        contactForm.reset();
+    });
+
+    // Interactive Welcome Button
+    const welcomeBtn = document.getElementById('welcome-btn');
+    const welcomeMsg = document.getElementById('welcome-msg');
+
+    welcomeBtn.addEventListener('click', function () {
+        welcomeMsg.style.display = 'block';
+        welcomeMsg.textContent = "Welcome to our school! We're glad to have you visit our website.";
+        setTimeout(() => {
+            welcomeMsg.style.display = 'none';
+        }, 3500); // hide after 3.5 seconds
+    });
+    </script>
+</body>
+</html>
