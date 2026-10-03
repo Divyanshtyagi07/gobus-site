@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>GoBus Travels - Online Bus Booking, Live Tracking, Payment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      /* Vibrant new color palette */
       --main: #6159e4;
       --main2: #27bcd4;
       --main-dark: #312084;
@@ -23,104 +22,351 @@
       --seat-selected: #ffdd47;
       --site-accent: #fce253;
     }
-    html { scroll-behavior:smooth;}
+
+    html { scroll-behavior: smooth; }
+
     body {
-      margin: 0; background: var(--bg); color: #22243e;
-      font-family: 'Montserrat', Arial, Helvetica, sans-serif; min-height: 100vh;
-      font-size:16px;
+      margin: 0;
+      background: var(--bg);
+      color: #22243e;
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      font-size: 16px;
     }
+
     header {
       background: linear-gradient(95deg, var(--main) 74%, var(--main2));
-      color: #fff; padding: .92em 1.2em .7em 1.9em;
-      font-size: 2.04rem; font-weight:900;
+      color: #fff;
+      padding: .92em 1.2em .7em 1.9em;
+      font-size: 2.04rem;
+      font-weight: 900;
       box-shadow: 0 3px 16px #2a21a720;
-      display: flex; align-items:center; gap:.73em;
-      letter-spacing:.02em; border-bottom-left-radius:24px;
+      display: flex;
+      align-items: center;
+      gap: .73em;
+      letter-spacing: .02em;
+      border-bottom-left-radius: 24px;
     }
+
     header img.brand {
-      height:2.5rem; margin-right:.7em; background:#1de4cf36; border-radius:1em; box-shadow:0 2px 16px #6a54ef33;
+      height: 2.5rem;
+      margin-right: .7em;
+      background: #1de4cf36;
+      border-radius: 1em;
+      box-shadow: 0 2px 16px #6a54ef33;
     }
-    main {padding: 1.5rem 0;}
-    .container { max-width: 1080px; margin:auto; }
+
+    main { padding: 1.5rem 0; }
+    .container { max-width: 1080px; margin: auto; }
+
     .glass-card {
-      background: var(--glass); border-radius: 1.3rem; box-shadow: var(--shadow);
+      background: var(--glass);
+      border-radius: 1.3rem;
+      box-shadow: var(--shadow);
       padding: clamp(1rem, 7vw, 2.3rem) clamp(.75rem, 7vw, 2.9rem) 1.1rem;
-      margin: 2.2rem auto 1.99rem auto; animation: fadein .7s;
+      margin: 2.2rem auto 1.99rem auto;
+      animation: fadein .7s;
     }
-    @keyframes fadein {from{opacity:0;transform:scale(.97);}to{opacity:1;}}
-    h2, h3{color:var(--main-dark); font-weight: bold;}
-    /* Role selection */
-    .role-btns {display:flex;gap:1.3em;justify-content:center;margin-top:1.8em;}
+
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(.97); }
+      to { opacity: 1; }
+    }
+
+    h2, h3 { color: var(--main-dark); font-weight: bold; }
+
+    .role-btns {
+      display: flex;
+      gap: 1.3em;
+      justify-content: center;
+      margin-top: 1.8em;
+      flex-wrap: wrap;
+    }
+
     .role-btn {
-      flex:1 1 110px;text-align:center;background: var(--main);
-      color:#fff;font-weight:700;font-size:1.13em; border-radius:1.3em;
-      padding:1.31em .1em; box-shadow: 0 4px 21px #6159e41a; cursor:pointer;transition:.18s all;outline:none;border:none;
-      display: flex;flex-direction:column;align-items:center;min-width:120px;max-width:220px;position:relative;
+      flex: 1 1 110px;
+      text-align: center;
+      background: var(--main);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.13em;
+      border-radius: 1.3em;
+      padding: 1.31em .1em;
+      box-shadow: 0 4px 21px #6159e41a;
+      cursor: pointer;
+      transition: .18s all;
+      outline: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 120px;
+      max-width: 220px;
+      position: relative;
     }
-    .role-btn.selected,.role-btn:hover {background:var(--purple2); color:var(--yellow);}
-    .role-btn img {height:40px;margin-bottom:.43em;user-drag:none;}
-    /* Inputs & buttons */
-    .input { width: 100%;padding:.98em 1em;font-size: 1.09em;margin:.7em 0 1.19em 0;
-        border:1.99px solid #e1e4f7; border-radius:.82em;background:#f4f8fd;
-        font-family:inherit;transition:.14s;outline:none;}
-    .input:focus{ border-color:var(--main2);}
+
+    .role-btn.selected,
+    .role-btn:hover {
+      background: var(--purple2);
+      color: var(--yellow);
+    }
+
+    .role-btn img { height: 40px; margin-bottom: .43em; }
+
+    .input {
+      width: 100%;
+      padding: .98em 1em;
+      font-size: 1.09em;
+      margin: .7em 0 1.19em 0;
+      border: 1.99px solid #e1e4f7;
+      border-radius: .82em;
+      background: #f4f8fd;
+      font-family: inherit;
+      transition: .14s;
+      outline: none;
+    }
+
+    .input:focus { border-color: var(--main2); }
+
     .main-btn,
     .action-btn {
       background: linear-gradient(90deg, var(--main), var(--purple2));
-      color: #ffeefd;font-weight:700; border:none; font-size:1em; padding:.93em 2.3em; border-radius:2.2em;
-      cursor:pointer;transition:background .16s,box-shadow .12s; box-shadow:0 2px 11px #685dec18; letter-spacing:.04em;
+      color: #ffeefd;
+      font-weight: 700;
+      border: none;
+      font-size: 1em;
+      padding: .93em 2.3em;
+      border-radius: 2.2em;
+      cursor: pointer;
+      transition: background .16s, box-shadow .12s;
+      box-shadow: 0 2px 11px #685dec18;
+      letter-spacing: .04em;
     }
-    .main-btn:hover, .action-btn:hover { background:var(--main-dark); color:var(--yellow);}
-    /* Small and back buttons */
+
+    .main-btn:hover, .action-btn:hover {
+      background: var(--main-dark);
+      color: var(--yellow);
+    }
+
     .small-btn, .back-btn {
-      padding:.41em 1.09em; font-size:.97em; border-radius:2em; cursor:pointer;
-      font-weight:700;background:var(--main-dark);color:#fff;border:none;outline:none;transition:.13s;margin-bottom:.2em;
-      margin-top:.1em; margin-right:.33em;
+      padding: .41em 1.09em;
+      font-size: .97em;
+      border-radius: 2em;
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--main-dark);
+      color: #fff;
+      border: none;
+      outline: none;
+      transition: .13s;
+      margin-bottom: .2em;
+      margin-top: .1em;
+      margin-right: .33em;
     }
-    .small-btn:disabled {background:#eee;color:#aaa;}
-    .back-btn {background: var(--turquoise); color:var(--main-dark);font-weight:bold;margin-left:7px;}
-    .back-btn:hover {background:var(--main); color:var(--yellow);}
-    /* Notification */
+
+    .small-btn:disabled { background: #eee; color: #aaa; }
+
+    .back-btn {
+      background: var(--turquoise);
+      color: var(--main-dark);
+      font-weight: bold;
+      margin-left: 7px;
+    }
+
+    .back-btn:hover { background: var(--main); color: var(--yellow); }
+
     .notif {
-      display:inline-block;background:var(--main-dark);color:#fff;
-      font-weight:700;padding:.47em 1.99em;border-radius:1.2em;box-shadow:0 2px 12px #187be733;font-size:1.08em;
-      margin-top:.5em;animation: fadein .38s;letter-spacing:.03em;}
-    /* Stepper navigation */
-    .stepper {display:flex;justify-content:center;gap:2em;margin-bottom:2.1em;}
-    .step {color:var(--main-dark);font-weight:600; font-size:1.01em; opacity:.83; position:relative;}
-    .step.active {opacity:1;font-weight:900;}
-    .step.active:after {content:'';display:block;background:var(--yellow);height:3px;border-radius:30px;margin-top:3px;width:68%;margin-left:14%;}
-    /* Images & illustrations */
+      display: inline-block;
+      background: var(--main-dark);
+      color: #fff;
+      font-weight: 700;
+      padding: .47em 1.99em;
+      border-radius: 1.2em;
+      box-shadow: 0 2px 12px #187be733;
+      font-size: 1.08em;
+      margin-top: .5em;
+      animation: fadein .38s;
+      letter-spacing: .03em;
+    }
+
+    .stepper {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      margin-bottom: 2.1em;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      color: var(--main-dark);
+      font-weight: 600;
+      font-size: 1.01em;
+      opacity: .83;
+      position: relative;
+    }
+
+    .step.active { opacity: 1; font-weight: 900; }
+    .step.active:after {
+      content: '';
+      display: block;
+      background: var(--yellow);
+      height: 3px;
+      border-radius: 30px;
+      margin-top: 3px;
+      width: 68%;
+      margin-left: 14%;
+    }
+
     .banner, .section-img, .route-img, .payimg {
-      display:block; margin:1.13em auto .9em auto; max-width:700px; width:94vw; border-radius:.98em;box-shadow:0 12px 38px #382dad18;
-      object-fit:cover; object-position: center;}
-    .banner {max-height:140px;}
-    .section-img,.route-img,.payimg {max-height:120px;}
-    /* Bus card grid */
-    .bus-list {display:grid;grid-template-columns:1fr 1fr;gap:1.1em;}
-    @media (max-width:700px){.bus-list{grid-template-columns:1fr;}}
-    .bus-card {background:#e5f7ffdb;padding:1.1em 1.19em 1.5em 1.19em;border-radius:1.1em;box-shadow:0 2px 7px #27bcd425;margin-bottom:.07em;transition:.12s;}
-    .bus-card img {width:68px;height:44px;object-fit:cover;border-radius:7px;box-shadow:0 1px 5px #27bcd422;margin-right:.8em;}
-    .bus-info {display:flex;align-items:center;gap:.7em;}
-    /* Seats display */
-    .seat-grid {display:grid;grid-template-columns:repeat(5,32px); gap:11px;margin:2em auto 1.4em auto;max-width:186px;}
-    .seat { width:29px;height:29px;border-radius:7px;
-      background: var(--seat-available); display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1em;cursor:pointer;box-shadow:0 2.2px 5px #16e59651;color:#fff;border:2.2px solid #fff; transition:.15s;position:relative;user-select:none;}
-    .seat.occupied {background: var(--seat-occupied);color:#eee;cursor:not-allowed;}
-    .seat.selected {background:var(--seat-selected);color:var(--main-dark);border:2.2px solid var(--main2);}
-    .seat-label {font-size:.93em;margin-top:.2em;letter-spacing:.04em;}
-    /* Popup */
-    #popup {position:fixed;z-index:99;top:0;left:0;right:0;bottom:0;background:rgba(16,24,34,.25);display:none;align-items:center;justify-content:center;}
-    #popup .popup-content {background: var(--glass);box-shadow:0 8px 44px #1868e734;padding:2em 2.1em 2.2em 2.1em;
-      border-radius:1.6em;text-align:center;font-size:1.21em;font-weight:bold;color:var(--main2);animation: fadein .7s;
-      max-width:90vw;} #popup .popup-content img { width:81px;margin-bottom:1em;}
-    #popup .close-btn { background: var(--main-dark);color:#fff;border:none;border-radius:2em;font-size:1.08em;font-weight:900;padding:.56em 2em;cursor:pointer;margin-top:1em; }
-    #popup .close-btn:hover {background:var(--main);}
-    /* Responsive tweaks */
+      display: block;
+      margin: 1.13em auto .9em auto;
+      max-width: 700px;
+      width: 94vw;
+      border-radius: .98em;
+      box-shadow: 0 12px 38px #382dad18;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .banner { max-height: 140px; }
+    .section-img, .route-img, .payimg { max-height: 120px; }
+
+    .bus-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1em;
+    }
+
     @media (max-width:700px) {
-      .glass-card {padding:1.2em .7em;}
-      .banner {max-height:80px;}
-      .section-img,.route-img,.payimg{max-height:70px;}
+      .bus-list { grid-template-columns: 1fr; }
+    }
+
+    .bus-card {
+      background: #e5f7ffdb;
+      padding: 1.1em 1.19em 1.5em;
+      border-radius: 1.1em;
+      box-shadow: 0 2px 7px #27bcd425;
+      margin-bottom: .07em;
+      transition: .12s;
+    }
+
+    .bus-card img {
+      width: 68px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 7px;
+      box-shadow: 0 1px 5px #27bcd422;
+      margin-right: .8em;
+    }
+
+    .bus-info {
+      display: flex;
+      align-items: center;
+      gap: .7em;
+    }
+
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 32px);
+      gap: 11px;
+      margin: 2em auto 1.4em auto;
+      max-width: 186px;
+    }
+
+    .seat {
+      width: 29px;
+      height: 29px;
+      border-radius: 7px;
+      background: var(--seat-available);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 2.2px 5px #16e59651;
+      color: #fff;
+      border: 2.2px solid transparent;
+    }
+
+    .seat.occupied {
+      background: var(--seat-occupied);
+      color: #eee;
+      cursor: not-allowed;
+    }
+
+    .seat.selected {
+      background: var(--seat-selected);
+      color: var(--main-dark);
+      border: 2.2px solid var(--main2);
+    }
+
+    .seat-label { font-size: .93em; margin-top: .2em; letter-spacing: .04em; }
+
+    #popup {
+      position: fixed;
+      z-index: 99;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(16,24,34,.25);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #popup .popup-content {
+      background: var(--glass);
+      box-shadow: 0 8px 44px #1868e734;
+      padding: 2em 2.1em 2.2em;
+      border-radius: 1.6em;
+      text-align: center;
+      font-size: 1.21em;
+      font-weight: bold;
+      color: var(--main2);
+      animation: fadein .7s;
+      max-width: 90vw;
+    }
+
+    #popup .popup-content img { width: 81px; margin-bottom: 1em; }
+
+    #popup .close-btn {
+      background: var(--main-dark);
+      color: #fff;
+      border: none;
+      border-radius: 2em;
+      font-size: 1.08em;
+      font-weight: 900;
+      padding: .56em 2em;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+
+    #popup .close-btn:hover { background: var(--main); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+    }
+
+    table th, table td {
+      border: 1px solid #dfe7ff;
+      padding: .75em .6em;
+      text-align: left;
+      font-size: .96em;
+    }
+
+    table th {
+      background: #eef3ff;
+      color: var(--main-dark);
+    }
+
+    @media (max-width:700px) {
+      .glass-card { padding: 1.2em .7em; }
+      .banner { max-height: 80px; }
+      .section-img, .route-img, .payimg { max-height: 70px; }
     }
   </style>
 </head>
@@ -129,6 +375,7 @@
     <img src="https://i.ibb.co/q5hL7F8/bus-logo-blue.png" alt="GoBus logo" class="brand" loading="lazy" />
     <span>GoBus Travels</span>
   </header>
+
   <main>
     <div id="notification" style="text-align:center;"></div>
     <div id="screen"></div>
@@ -136,90 +383,143 @@
       <div class="popup-content" id="popup-content"></div>
     </div>
   </main>
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    // -- "Backend" DB for demo
     const users = [
-      {id:1, name:"Admin", email:"admin@gobus.com", password:"admin123", role:"admin"},
-      {id:2, name:"D.Pal Driver", email:"driver@gobus.com", password:"driveok", role:"driver", phone:"9876538827"}
+      { id: 1, name: 'Admin', email: 'admin@gobus.com', password: 'admin123', role: 'admin' },
+      { id: 2, name: 'D.Pal Driver', email: 'driver@gobus.com', password: 'driveok', role: 'driver', phone: '9876538827' }
     ];
-    let bookings=[];
-    let buses=[], currSession=null;
-    // Bank details for demo
+
+    let bookings = [];
+    let buses = [];
+    let currSession = null;
+    let selectionRoute = null;
+
     const BANK_DETAILS = `Pay to UPI: <b>yourbank@upi</b><br/>A/C No.: <b>9876543210</b> (Divyansh Tyagi)<br/>IFSC: <b>SBIN0000123</b>`;
 
-    // Random bus gen
-    const busPics=[ "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=650&q=80", "https://images.unsplash.com/photo-1455656678494-4d1d13c8d6c5?auto=format&fit=crop&w=650&q=80", "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?auto=format&fit=crop&w=650&q=80" ];
-    const startCities = ["Delhi","Noida","Agra","Lucknow","Kanpur","Bhopal","Chandigarh","Gwalior"];
-    const endCities   = ["Jaipur","Agra","Kanpur","Delhi","Indore","Lucknow","Jammu"];
-    for(let i=1;i<=14;i++){
-      let from=startCities[Math.floor(Math.random()*startCities.length)];
-      let to=endCities[Math.floor(Math.random()*endCities.length)];
-      while(from===to) to=endCities[Math.floor(Math.random()*endCities.length)];
-      let hour=String(7+Math.floor(Math.random()*12)).padStart(2,'0'),
-          min=String(Math.floor(Math.random()*60)).padStart(2,'0');
-      const seats=32+Math.floor(Math.random()*7);
-      buses.push({
-        id:i,route:`${from} → ${to}`,busNum:`GB${110+i}`,operator: ["MetroLink","CityKing","Rainbow","BlueLine","GoBus Pvt Ltd"][i%5],
-        departure:`${hour}:${min}`,price:390+Math.floor(Math.random()*600), date:"",
-        driver: (i<=2?2:null),
-        img:busPics[i%busPics.length],
-        seats, seatsLeft: Math.floor(seats*0.59+Math.random()*seats*0.36),
-        seatMap: Array(seats).fill(0).map((_,j)=> (j<Math.floor(Math.random()*7)?1: 0 ) )
+    const routeCoordinates = {
+      'Delhi → Jaipur': [[28.6139, 77.2090], [26.9124, 75.7873]],
+      'Delhi → Agra': [[28.6139, 77.2090], [27.1767, 78.0081]],
+      'Noida → Jaipur': [[28.5355, 77.3910], [26.9124, 75.7873]],
+      'Noida → Agra': [[28.5355, 77.3910], [27.1767, 78.0081]],
+      'Agra → Delhi': [[27.1767, 78.0081], [28.6139, 77.2090]],
+      'Agra → Lucknow': [[27.1767, 78.0081], [26.8467, 80.9462]],
+      'Lucknow → Delhi': [[26.8467, 80.9462], [28.6139, 77.2090]],
+      'Kanpur → Delhi': [[26.4499, 80.3319], [28.6139, 77.2090]],
+      'Delhi → Lucknow': [[28.6139, 77.2090], [26.8467, 80.9462]],
+      'Jaipur → Delhi': [[26.9124, 75.7873], [28.6139, 77.2090]],
+      'Jaipur → Agra': [[26.9124, 75.7873], [27.1767, 78.0081]],
+      'Bhopal → Delhi': [[23.2599, 77.4126], [28.6139, 77.2090]],
+      'Chandigarh → Delhi': [[30.7333, 76.7794], [28.6139, 77.2090]],
+      'Gwalior → Delhi': [[26.2183, 78.1828], [28.6139, 77.2090]]
+    };
+
+    const busPics = [
+      'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=650&q=80',
+      'https://images.unsplash.com/photo-1455656678494-4d1d13c8d6c5?auto=format&fit=crop&w=650&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=650&q=80'
+    ];
+
+    const routeTemplates = [
+      ['Delhi', 'Jaipur'],
+      ['Delhi', 'Agra'],
+      ['Noida', 'Jaipur'],
+      ['Noida', 'Agra'],
+      ['Agra', 'Delhi'],
+      ['Agra', 'Lucknow'],
+      ['Lucknow', 'Delhi'],
+      ['Kanpur', 'Delhi'],
+      ['Delhi', 'Lucknow'],
+      ['Jaipur', 'Delhi'],
+      ['Jaipur', 'Agra'],
+      ['Bhopal', 'Delhi'],
+      ['Chandigarh', 'Delhi'],
+      ['Gwalior', 'Delhi']
+    ];
+
+    const startCities = ['Delhi', 'Noida', 'Agra', 'Lucknow', 'Kanpur', 'Bhopal', 'Chandigarh', 'Gwalior'];
+    const endCities = ['Jaipur', 'Agra', 'Kanpur', 'Delhi', 'Indore', 'Lucknow', 'Jammu'];
+
+    function buildDemoBuses() {
+      buses = routeTemplates.map((route, index) => {
+        const [from, to] = route;
+        const price = 390 + ((index * 73) % 420);
+        const seats = 32 + (index % 8);
+        const seatMap = Array(seats).fill(0).map((_, j) => (j < ((index + 2) % 7) ? 1 : 0));
+        return {
+          id: index + 1,
+          route: `${from} → ${to}`,
+          busNum: `GB${110 + index}`,
+          operator: ['MetroLink', 'CityKing', 'Rainbow', 'BlueLine', 'GoBus Pvt Ltd'][index % 5],
+          departure: `${String(7 + (index * 2) % 10).padStart(2, '0')}:${String((index * 13) % 60).padStart(2, '0')}`,
+          price,
+          driver: index <= 2 ? 2 : null,
+          img: busPics[index % busPics.length],
+          seats,
+          seatsLeft: Math.max(8, Math.floor(seats * 0.62) + (index % 4)),
+          seatMap
+        };
       });
     }
-    //--- Notification
-    function showNotification(msg, color="#312084") {
-      const el = document.getElementById("notification");
-      el.innerHTML = `<div class='notif' style="background:${color};">${msg}</div>`;
-      setTimeout(()=>el.innerHTML="",1900);
-    }
-    function popup(msg, img) {
-      document.getElementById("popup-content").innerHTML =
-        `<img src="${img||'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f44b.svg'}"/><div style="margin:1.1em 0 .81em 0;">${msg}</div><button class="close-btn" onclick="closePopup()">Ok</button>`;
-      document.getElementById("popup").style.display="flex";
-    }
-    function closePopup() {document.getElementById("popup").style.display="none";}
 
-    // -- Start screen
-    function setScreen(html){
-      document.getElementById("screen").innerHTML = `<div class="container"><div class="glass-card">${html}</div></div>`;
+    function showNotification(msg, color = '#312084') {
+      const el = document.getElementById('notification');
+      el.innerHTML = `<div class='notif' style="background:${color};">${msg}</div>`;
+      setTimeout(() => el.innerHTML = '', 1900);
     }
-    let selectedRole="";
-    showStart();
+
+    function popup(msg, img) {
+      document.getElementById('popup-content').innerHTML = `
+        <img src="${img || 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f44b.svg'}" />
+        <div style="margin:1.1em 0 .81em 0;">${msg}</div>
+        <button class="close-btn" onclick="closePopup()">OK</button>
+      `;
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    function setScreen(html) {
+      document.getElementById('screen').innerHTML = `<div class="container"><div class="glass-card">${html}</div></div>`;
+    }
+
     function showStart() {
       setScreen(`
         <h2>✨ Welcome to GoBus Travels</h2>
-        <img src="https://images.unsplash.com/photo-1523978591478-c753949ff840?auto=format&fit=crop&w=900&q=80" class="banner" alt="Travel bus"/>
+        <img src="https://images.unsplash.com/photo-1523978591478-c753949ff840?auto=format&fit=crop&w=900&q=80" class="banner" alt="Travel bus" />
         <div class="role-btns">
           <button class="role-btn" onclick="selectRole('passenger')">
-            <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Passenger"/>Passenger
+            <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Passenger" />Passenger
           </button>
           <button class="role-btn" onclick="selectRole('driver')">
-            <img src="https://cdn-icons-png.flaticon.com/512/1603/1603847.png" alt="Driver"/>Driver
+            <img src="https://cdn-icons-png.flaticon.com/512/1603/1603847.png" alt="Driver" />Driver
           </button>
           <button class="role-btn" onclick="selectRole('admin')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3284/3284815.png" alt="Admin"/>Admin
+            <img src="https://cdn-icons-png.flaticon.com/512/3284/3284815.png" alt="Admin" />Admin
           </button>
         </div>
         <div style="margin:2.35em 0 0 0;text-align:center;font-size:1.05em;">
           <span style="color:var(--main);font-weight:700;">One stop for secure, easy bus travel bookings!</span>
         </div>
-      `);selectedRole="";
+      `);
     }
-    function selectRole(role){
-      selectedRole=role;
-      document.querySelectorAll('.role-btn').forEach(btn=>btn.classList.remove('selected'));
-      const idx = ['passenger','driver','admin'].indexOf(role);
+
+    function selectRole(role) {
+      document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('selected'));
+      const idx = ['passenger', 'driver', 'admin'].indexOf(role);
       document.querySelectorAll('.role-btn')[idx].classList.add('selected');
-      setTimeout(()=>{
-        if(role==="passenger") signupPassenger();
-        if(role==="driver") loginDriver();
-        if(role==="admin") loginAdmin();
-      },400);
+
+      setTimeout(() => {
+        if (role === 'passenger') signupPassenger();
+        if (role === 'driver') loginDriver();
+        if (role === 'admin') loginAdmin();
+      }, 400);
     }
-    // --- Passenger signup/login
-    function signupPassenger(){
+
+    function signupPassenger() {
       setScreen(`
         <div class="stepper">
           <span class="step active">1. Sign Up</span>
@@ -227,12 +527,12 @@
           <span class="step">3. Seats</span>
           <span class="step">4. Pay</span>
         </div>
-        <img src="https://cdn.pixabay.com/photo/2019/03/20/11/11/online-4068393_960_720.jpg" class="section-img"/>
+        <img src="https://cdn.pixabay.com/photo/2019/03/20/11/11/online-4068393_960_720.jpg" class="section-img" />
         <h2>Sign Up</h2>
         <form onsubmit="return handleSignup(this)">
-          <input class="input" name="name" required minlength="2" placeholder="Full Name"/>
-          <input class="input" name="email" required type="email" placeholder="Gmail address"/>
-          <input class="input" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="Phone Number"/>
+          <input class="input" name="name" required minlength="2" placeholder="Full Name" />
+          <input class="input" name="email" required type="email" placeholder="Gmail address" />
+          <input class="input" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="Phone Number" />
           <button type="button" class="main-btn" onclick="signupWithGoogle()">Sign up with Google</button>
           <button type="submit" class="main-btn">Sign Up</button>
           <button type="button" class="back-btn" onclick="showStart()">Back</button>
@@ -240,45 +540,57 @@
         <div style="font-size:.97em;color:var(--main-dark)">Already registered? <a href="#" onclick="loginPassenger();return false;" style="color:var(--turquoise);font-weight:bold;">Log in</a></div>
       `);
     }
-    function loginPassenger(){
+
+    function loginPassenger() {
       setScreen(`
-        <img src="https://cdn.pixabay.com/photo/2018/03/01/10/32/bus-3187932_1280.jpg" class="section-img"/>
+        <img src="https://cdn.pixabay.com/photo/2018/03/01/10/32/bus-3187932_1280.jpg" class="section-img" />
         <h2>Passenger Login</h2>
         <form onsubmit="return handlePassengerLogin(this)">
-          <input class="input" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="Phone Number"/>
+          <input class="input" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="Phone Number" />
           <button type="submit" class="main-btn">Log in</button>
           <button type="button" class="back-btn" onclick="signupPassenger()">Back</button>
         </form>
       `);
     }
-    function signupWithGoogle(){
-      popup("Signed up with Google! 🎉<br>Welcome to GoBus.","https://cdn-icons-png.flaticon.com/512/270/270798.png");
-      setTimeout(()=> chooseRoutePanel(),1400);
-      currSession={id:Date.now(),name:"Google User "+Math.floor(Math.random()*99),phone:"9"+Math.floor(1e9+Math.random()*9e8),email:"googleuser@demo.com",role:"passenger"};
+
+    function signupWithGoogle() {
+      popup('Signed up with Google! 🎉<br>Welcome to GoBus.', 'https://cdn-icons-png.flaticon.com/512/270/270798.png');
+      setTimeout(() => chooseRoutePanel(), 1400);
+      currSession = { id: Date.now(), name: 'Google User ' + Math.floor(Math.random() * 99), phone: '9' + Math.floor(1e9 + Math.random() * 9e8), email: 'googleuser@demo.com', role: 'passenger' };
       users.push(currSession);
     }
-    function handleSignup(form){
+
+    function handleSignup(form) {
       const name = form.name.value.trim();
       const email = form.email.value.trim();
       const phone = form.phone.value.trim();
-      if(!name || !email || !phone)return false;
-      if(users.some(u=>u.email===email)){showNotification("Email already registered!","#fa5a5e");return false;}
-      if(users.some(u=>u.phone===phone)){showNotification("Phone already registered!","#fa5a5e");return false;}
-      let newUser={id:users.length+1,name,email,phone,role:"passenger"};
-      users.push(newUser); currSession=newUser;
-      popup(`Welcome, ${name.split(' ')[0]}!<br>Your GoBus account is ready.`,`https://cdn-icons-png.flaticon.com/512/2329/2329202.png`);
-      setTimeout(()=>chooseRoutePanel(),1450);
+
+      if (!name || !email || !phone) return false;
+      if (users.some(u => u.email === email)) { showNotification('Email already registered!', '#fa5a5e'); return false; }
+      if (users.some(u => u.phone === phone)) { showNotification('Phone already registered!', '#fa5a5e'); return false; }
+
+      const newUser = { id: users.length + 1, name, email, phone, role: 'passenger' };
+      users.push(newUser);
+      currSession = newUser;
+      popup(`Welcome, ${name.split(' ')[0]}!<br>Your GoBus account is ready.`, 'https://cdn-icons-png.flaticon.com/512/2329/2329202.png');
+      setTimeout(() => chooseRoutePanel(), 1450);
       return false;
     }
-    function handlePassengerLogin(form){
-      const phone=form.phone.value.trim();
-      let user=users.find(u=>u.phone===phone && u.role==="passenger");
-      if(!user){showNotification("No account with this phone. Sign up first!","#fa5a5e");return false;}
-      currSession=user; showNotification("Welcome back!","#27bcd4"); setTimeout(chooseRoutePanel,600);
+
+    function handlePassengerLogin(form) {
+      const phone = form.phone.value.trim();
+      const user = users.find(u => u.phone === phone && u.role === 'passenger');
+      if (!user) {
+        showNotification('No account with this phone. Sign up first!', '#fa5a5e');
+        return false;
+      }
+      currSession = user;
+      showNotification('Welcome back!', '#27bcd4');
+      setTimeout(chooseRoutePanel, 600);
       return false;
     }
-    // --- Route selection
-    function chooseRoutePanel(){
+
+    function chooseRoutePanel() {
       setScreen(`
         <div class="stepper">
           <span class="step">1. Sign Up</span>
@@ -286,47 +598,65 @@
           <span class="step">3. Seats</span>
           <span class="step">4. Pay</span>
         </div>
-        <img src="https://cdn.pixabay.com/photo/2020/01/17/07/34/bus-47718_1280.jpg" class="route-img"/>
+        <img src="https://cdn.pixabay.com/photo/2020/01/17/07/34/bus-47718_1280.jpg" class="route-img" />
         <h2>Select Route & Date</h2>
         <form onsubmit="return handleRouteChoose(this)">
           <label for="from"><b>From:</b></label>
           <select class="input" name="from" required style="max-width:220px;">
             <option value="">Select City</option>
-            ${startCities.map(c=>`<option>${c}</option>`).join('')}
+            ${startCities.map(c => `<option>${c}</option>`).join('')}
           </select>
           <label for="to"><b>To:</b></label>
           <select class="input" name="to" required style="max-width:220px;">
             <option value="">Select City</option>
-            ${endCities.map(c=>`<option>${c}</option>`).join('')}
+            ${endCities.map(c => `<option>${c}</option>`).join('')}
           </select>
           <label for="date"><b>Date:</b></label>
-          <input class="input" type="date" name="date" min="${new Date().toISOString().slice(0,10)}" required style="max-width:160px;">
+          <input class="input" type="date" name="date" min="${new Date().toISOString().slice(0,10)}" required style="max-width:160px;" />
           <label for="numseats" style="font-weight:700;">No. of Seats</label>
           <select class="input" style="max-width:170px;" name="numseats" required>
-            ${[1,2,3,4,5].map(s=>`<option value="${s}">${s}</option>`).join('')}
+            ${[1, 2, 3, 4, 5].map(s => `<option value="${s}">${s}</option>`).join('')}
           </select>
           <button type="submit" class="main-btn">Show Buses</button>
           <button type="button" class="back-btn" onclick="signupPassenger()">Back</button>
         </form>
       `);
     }
-    let selectionRoute=null;
-    function handleRouteChoose(form){
-      const from = form.from.value, to=form.to.value, date=form.date.value,numSeats=+form.numseats.value;
-      if(from===to){showNotification("Select different cities","#fa5a5e");return false;}
-      selectionRoute = {from, to, date, numSeats};
+
+    function handleRouteChoose(form) {
+      const from = form.from.value;
+      const to = form.to.value;
+      const date = form.date.value;
+      const numSeats = +form.numseats.value;
+
+      if (!from || !to || !date) {
+        showNotification('Please select route and date', '#fa5a5e');
+        return false;
+      }
+
+      if (from === to) {
+        showNotification('Select different cities', '#fa5a5e');
+        return false;
+      }
+
+      selectionRoute = { from, to, date, numSeats };
       showBusList();
       return false;
     }
-    // -- Bus list
-    function showBusList(){
-      let avail = buses.filter(b=>(b.route===`${selectionRoute.from} → ${selectionRoute.to}` || !selectionRoute.from || !selectionRoute.to) && b.seatsLeft>=selectionRoute.numSeats);
-      if(!avail.length){
-        setScreen(`<h2>No buses found for that route/date</h2>
-        <img src="https://cdn-icons-png.flaticon.com/512/190/190677.png" style="height:98px;margin:2em auto;display:block;">
-        <button class="main-btn" onclick="chooseRoutePanel()">Back to route selection</button>
-        `); return;
+
+    function showBusList() {
+      const routeKey = `${selectionRoute.from} → ${selectionRoute.to}`;
+      const avail = buses.filter(bus => bus.route === routeKey && bus.seatsLeft >= selectionRoute.numSeats);
+
+      if (!avail.length) {
+        setScreen(`
+          <h2>No buses found for that route/date</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/190/190677.png" style="height:98px;margin:2em auto;display:block;" />
+          <button class="main-btn" onclick="chooseRoutePanel()">Back to route selection</button>
+        `);
+        return;
       }
+
       setScreen(`
         <div class="stepper">
           <span class="step">1. Sign Up</span>
@@ -336,10 +666,10 @@
         </div>
         <h2>Pick your bus (${avail.length} found)</h2>
         <div class="bus-list">
-          ${avail.map(bus=>`
+          ${avail.map(bus => `
             <div class="bus-card">
               <div class="bus-info">
-                <img src="${bus.img}" alt="bus"/>
+                <img src="${bus.img}" alt="bus" />
                 <div>
                   <span style="font-size:1.18em;font-weight:700;color:var(--main-dark);">${bus.busNum}</span>
                   <div style="font-size:.97em;">${bus.operator}</div>
@@ -349,15 +679,16 @@
               <div class="seat-label">
                 Departure: ${bus.departure} | Seats Left: <b>${bus.seatsLeft}</b>
               </div>
-              <button class="main-btn" style="margin-top:.6em;" onclick="selectBusForSeats(${bus.id})" ${bus.seatsLeft<selectionRoute.numSeats?'disabled':''}>Select & Seats</button>
+              <button class="main-btn" style="margin-top:.6em;" onclick="selectBusForSeats(${bus.id})" ${bus.seatsLeft < selectionRoute.numSeats ? 'disabled' : ''}>Select & Seats</button>
             </div>
           `).join('')}
         </div>
         <button class="main-btn" onclick="chooseRoutePanel()" style="margin-top:2em;">Back</button>
       `);
     }
-    function selectBusForSeats(busId){
-      let bus = buses.find(b=>b.id==busId);
+
+    function selectBusForSeats(busId) {
+      const bus = buses.find(b => b.id == busId);
       setScreen(`
         <div class="stepper">
           <span class="step">1. Sign Up</span>
@@ -366,7 +697,7 @@
           <span class="step active">4. Pay</span>
         </div>
         <h2>Select ${selectionRoute.numSeats} Seats</h2>
-        <div style="margin-bottom:.6em;font-size:1.06em;">Bus: <b style="color:var(--main-dark);">${bus.busNum} (${bus.operator})</b> <br/>Seat arrangement below:</div>
+        <div style="margin-bottom:.6em;font-size:1.06em;">Bus: <b style="color:var(--main-dark);">${bus.busNum} (${bus.operator})</b><br />Seat arrangement below:</div>
         <div class="seat-grid" id="seatGrid"></div>
         <div style="margin:.6em 0;">
           <span style="display:inline-block;width:24px;height:15px;background:var(--seat-occupied);border-radius:4px;margin-right:.5em;vertical-align:middle;"></span>Occupied &nbsp;
@@ -374,217 +705,299 @@
           <span style="display:inline-block;width:24px;height:15px;background:var(--seat-available);border-radius:4px;margin-right:.5em;vertical-align:middle;"></span>Available
         </div>
         <form id="seatForm" onsubmit="return confirmSeatBook(${busId},this)">
-          <input type="hidden" id="seat-inp" required name="seat"/>
+          <input type="hidden" id="seat-inp" required name="seat" />
           <button type="submit" class="main-btn" id="bookBtn" disabled>Continue</button>
           <button type="button" class="back-btn" onclick="showBusList()">Back to Buses</button>
         </form>
       `);
-      setTimeout(()=>renderSeats(bus),50);
+      setTimeout(() => renderSeats(bus), 50);
     }
-    function renderSeats(bus){
-      const grid=document.getElementById('seatGrid');
-      grid.innerHTML="";
-      let selected=[];
-      bus.seatMap.forEach((occ,i)=>{
+
+    function renderSeats(bus) {
+      const grid = document.getElementById('seatGrid');
+      grid.innerHTML = '';
+      const selected = [];
+
+      bus.seatMap.forEach((occ, i) => {
         const seat = document.createElement('div');
-        seat.className='seat'+(occ===1?' occupied':'');
-        seat.innerHTML = i+1;
-        seat.onclick=function(){
-          if(occ===1) return;
-          if(selected.includes(i)){
-            seat.classList.remove('selected'); selected=selected.filter(s=>s!==i);
-          }else{
-            if(selected.length<selectionRoute.numSeats){
-              seat.classList.add('selected'); selected.push(i);
+        seat.className = 'seat' + (occ === 1 ? ' occupied' : '');
+        seat.innerHTML = i + 1;
+
+        seat.onclick = function () {
+          if (occ === 1) return;
+          if (selected.includes(i)) {
+            seat.classList.remove('selected');
+            selected.splice(selected.indexOf(i), 1);
+          } else {
+            if (selected.length < selectionRoute.numSeats) {
+              seat.classList.add('selected');
+              selected.push(i);
             }
           }
-          if(selected.length>selectionRoute.numSeats){
-            let idx=selected.shift();
-            grid.children[idx].classList.remove('selected');
+
+          if (selected.length > selectionRoute.numSeats) {
+            const idx = selected.shift();
+            const seatNode = grid.children[idx];
+            if (seatNode) seatNode.classList.remove('selected');
           }
-          document.getElementById("seat-inp").value = selected.map(x=>x+1).join(',');
-          document.getElementById("bookBtn").disabled=selected.length!==selectionRoute.numSeats;
+
+          document.getElementById('seat-inp').value = selected.map(x => x + 1).join(',');
+          document.getElementById('bookBtn').disabled = selected.length !== selectionRoute.numSeats;
         };
+
         grid.appendChild(seat);
       });
     }
-    function confirmSeatBook(busId,form){
-      let seatNums = form.seat.value.split(',').map(s=>+s-1);
-      let bus = buses.find(b=>b.id==busId);
-      if(seatNums.some(s=>bus.seatMap[s]===1)){
-        showNotification("Seat just taken! Try another","#fa5a5e"); return false;
+
+    function confirmSeatBook(busId, form) {
+      const seatNums = form.seat.value.split(',').map(s => +s - 1).filter(x => !isNaN(x));
+      const bus = buses.find(b => b.id == busId);
+
+      if (!seatNums.length || seatNums.some(s => bus.seatMap[s] === 1)) {
+        showNotification('Seat just taken! Try another', '#fa5a5e');
+        return false;
       }
-      for(let s of seatNums) bus.seatMap[s]=1; bus.seatsLeft-=seatNums.length;
+
+      for (const s of seatNums) bus.seatMap[s] = 1;
+      bus.seatsLeft -= seatNums.length;
+
       bookings.push({
-        id:bookings.length+1, userId:currSession.id, busId, seat:seatNums.map(x=>x+1), date:selectionRoute.date, driver:bus.driver
+        id: bookings.length + 1,
+        userId: currSession.id,
+        busId,
+        seat: seatNums.map(x => x + 1),
+        date: selectionRoute.date,
+        driver: bus.driver,
+        utr: null
       });
-      showPaymentPage(bus,seatNums.map(x=>x+1));
+
+      showPaymentPage(bus, seatNums.map(x => x + 1));
       return false;
     }
-    // PAYMENT
-    function showPaymentPage(bus,seatNos){
+
+    function showPaymentPage(bus, seatNos) {
       setScreen(`
         <h2>Pay & Confirm Booking</h2>
-        <img src="https://cdn.pixabay.com/photo/2018/02/18/13/22/credit-card-3163354_1280.jpg" class="payimg"/>
+        <img src="https://cdn.pixabay.com/photo/2018/02/18/13/22/credit-card-3163354_1280.jpg" class="payimg" />
         <div style="margin-bottom:1.4em;font-size:1.07em;">
-          <b>Total to Pay: <span style="color:var(--main2);">₹${bus.price*seatNos.length}</span></b><br/><br/>
+          <b>Total to Pay: <span style="color:var(--main2);">₹${bus.price * seatNos.length}</span></b><br /><br />
           <span style="color:#312084;font-weight:600;">Your Booking:</span>
           <div><b>Bus:</b> ${bus.busNum} - ${bus.route} @${bus.departure}</div>
-          <div><b>Seats:</b> ${seatNos.map(x=>`#${x}`).join(', ')}</div>
+          <div><b>Seats:</b> ${seatNos.map(x => `#${x}`).join(', ')}</div>
           <div><b>Name:</b> ${currSession.name} &emsp; <b>Phone:</b> ${currSession.phone}</div>
           <div><b>Date:</b> ${selectionRoute.date}</div>
         </div>
         <div class="notif" style="margin:1.1em auto;">${BANK_DETAILS}</div>
         <form onsubmit="return submitPayment(this,${bus.id},'${seatNos.join(',')}')">
-          <input class="input" type="text" name="utr" required placeholder="Enter Reference No./UTR after payment"/>
+          <input class="input" type="text" name="utr" required placeholder="Enter Reference No./UTR after payment" />
           <button type="submit" class="main-btn">Finish Booking</button>
           <button type="button" class="back-btn" onclick="selectBusForSeats(${bus.id})">Back</button>
         </form>
         <div style="font-size:13px;color:#6262a9;font-style:italic;margin:.6em 0;">(After UPI payment, please enter reference number [bank/UPI UTR].)</div>
       `);
     }
-    function submitPayment(form,busId,seatNos){
-      let utr=form.utr.value.trim();
-      if(!utr){showNotification("Please fill reference!","#fa5a5e");return false;}
-      // Find latest booking by user & mark paid
-      let bk=bookings.slice().reverse().find(bk=>bk.userId===currSession.id && bk.busId===busId && bk.seat.join(',')===seatNos && !bk.utr);
-      if(bk)bk.utr=utr;
-      popup(`<span style="color:var(--main-dark);font-size:1.12em;">Booking Complete!<br>Thank you, payment received.</span>`, "https://cdn-icons-png.flaticon.com/512/1973/1973813.png");
-      setTimeout(()=>showPassengerBookings(),1600);
+
+    function submitPayment(form, busId, seatNos) {
+      const utr = form.utr.value.trim();
+      if (!utr) {
+        showNotification('Please fill reference!', '#fa5a5e');
+        return false;
+      }
+
+      const bk = bookings.slice().reverse().find(item => item.userId === currSession.id && item.busId === busId && item.seat.join(',') === seatNos && !item.utr);
+      if (bk) bk.utr = utr;
+
+      popup('<span style="color:var(--main-dark);font-size:1.12em;">Booking Complete!<br>Thank you, payment received.</span>', 'https://cdn-icons-png.flaticon.com/512/1973/1973813.png');
+      setTimeout(() => showPassengerBookings(), 1600);
       return false;
     }
-    // Passenger Booking summary
-    function showPassengerBookings(){
-      let bks = bookings.filter(bk=>bk.userId===currSession.id);
+
+    function showPassengerBookings() {
+      const bks = bookings.filter(bk => bk.userId === currSession.id);
       setScreen(`
         <h2>My Bookings</h2>
         <table>
           <tr><th>Journey</th><th>Date</th><th>Seats</th><th>Payment Ref</th><th>Track</th></tr>
-          ${bks.length?bks.map(bk=>{
-            let bus=buses.find(b=>b.id===bk.busId);
+          ${bks.length ? bks.map(bk => {
+            const bus = buses.find(b => b.id === bk.busId);
             return `<tr>
               <td>${bus.busNum}<br>${bus.route}<br>${bus.departure}</td><td>${bk.date}</td>
-              <td>${bk.seat.map(x=>`<b>#${x}</b>`).join(' ')}</td>
-              <td>${bk.utr||"<em style='color:#e77922;'>Pending...</em>"}</td>
+              <td>${bk.seat.map(x => `<b>#${x}</b>`).join(' ')}</td>
+              <td>${bk.utr || "<em style='color:#e77922;'>Pending...</em>"}</td>
               <td><button class="small-btn" onclick="showTrackPassengerBus(${bus.id})">Track</button></td>
             </tr>`;
-          }).join(''):'<tr><td colspan="5" style="color:#ea233b;">No bookings yet!</td></tr>'}
+          }).join('') : '<tr><td colspan="5" style="color:#ea233b;">No bookings yet!</td></tr>'}
         </table>
         <button class="main-btn" onclick="chooseRoutePanel()">New Booking</button>
         <button class="back-btn" onclick="showStart()">Log out</button>
       `);
     }
-    function showTrackPassengerBus(busId){
-      let bus=buses.find(b=>b.id==busId);
-      setScreen(`<h2>Track Your Bus: ${bus.busNum}</h2>
-        <img src="${bus.img}" style="max-height:100px;display:block;margin:1em auto;"/>
-        <div id="live-map"></div>
-        <button class="main-btn" onclick="showPassengerBookings()">Back to My Bookings</button>
-      `);
-      setTimeout(()=>runBusMap(bus),70);
-    }
-    // --- Admin/driver login, dashboard, and bus tracking ---
-    function loginDriver(){
+
+    function showTrackPassengerBus(busId) {
+      const bus = buses.find(b => b.id == busId);
       setScreen(`
-        <img src="https://cdn-icons-png.flaticon.com/512/1603/1603847.png" class="section-img"/>
+        <h2>Track Your Bus: ${bus.busNum}</h2>
+        <img src="${bus.img}" style="max-height:100px;display:block;margin:1em auto;" />
+        <div id="live-map" style="height:320px;width:100%;border-radius:12px;overflow:hidden;"></div>
+        <button class="main-btn" onclick="showPassengerBookings()" style="margin-top:1em;">Back to My Bookings</button>
+      `);
+      setTimeout(() => runBusMap(bus), 70);
+    }
+
+    function loginDriver() {
+      setScreen(`
+        <img src="https://cdn-icons-png.flaticon.com/512/1603/1603847.png" class="section-img" />
         <h2>Driver Login</h2>
         <form onsubmit="return handleUserLogin(this,'driver')">
-          <input class="input" type="email" name="email" required placeholder="Email"/>
-          <input class="input" type="password" name="password" required placeholder="Password"/>
+          <input class="input" type="email" name="email" required placeholder="Email" />
+          <input class="input" type="password" name="password" required placeholder="Password" />
           <button class="main-btn">Sign In</button>
           <button class="back-btn" type="button" onclick="showStart()">Back</button>
         </form>
       `);
     }
-    function loginAdmin(){
+
+    function loginAdmin() {
       setScreen(`
-        <img src="https://cdn-icons-png.flaticon.com/512/3284/3284815.png" class="section-img"/>
+        <img src="https://cdn-icons-png.flaticon.com/512/3284/3284815.png" class="section-img" />
         <h2>Admin Login</h2>
         <form onsubmit="return handleUserLogin(this,'admin')">
-          <input class="input" type="email" name="email" required placeholder="Email"/>
-          <input class="input" type="password" name="password" required placeholder="Password"/>
+          <input class="input" type="email" name="email" required placeholder="Email" />
+          <input class="input" type="password" name="password" required placeholder="Password" />
           <button class="main-btn">Sign In</button>
           <button class="back-btn" type="button" onclick="showStart()">Back</button>
         </form>
       `);
     }
-    function handleUserLogin(form,role){
-      const e=form.email.value.trim(),p=form.password.value.trim();
-      let user=users.find(u=>u.email===e && u.password===p && u.role===role);
-      if(!user){showNotification("Invalid credentials!","#fa5a5e");return false;}
-      currSession=user; showNotification("Welcome!","#27bcd4");
-      if(role==="admin")showAdminPanel();
+
+    function handleUserLogin(form, role) {
+      const email = form.email.value.trim();
+      const password = form.password.value.trim();
+      const user = users.find(u => u.email === email && u.password === password && u.role === role);
+
+      if (!user) {
+        showNotification('Invalid credentials!', '#fa5a5e');
+        return false;
+      }
+
+      currSession = user;
+      showNotification('Welcome!', '#27bcd4');
+      if (role === 'admin') showAdminPanel();
       else showDriverPanel();
       return false;
     }
-    function showAdminPanel(){
+
+    function showAdminPanel() {
       setScreen(`
-        <img src="https://cdn.pixabay.com/photo/2017/03/31/21/51/bus-2192137_1280.jpg" class="banner"/>
+        <img src="https://cdn.pixabay.com/photo/2017/03/31/21/51/bus-2192137_1280.jpg" class="banner" />
         <h2>Admin Dashboard</h2>
         <table>
           <tr><th>Passenger</th><th>Phone</th><th>Date</th><th>Bus</th><th>Seats</th><th>Payment Ref</th></tr>
-          ${bookings.length? bookings.map(bk=>{
-            let bus=buses.find(b=>b.id===bk.busId), user=users.find(u=>u.id===bk.userId);
-            return `<tr><td>${user?user.name:"?"}</td>
-              <td>${user?user.phone:"?"}</td>
+          ${bookings.length ? bookings.map(bk => {
+            const bus = buses.find(b => b.id === bk.busId);
+            const user = users.find(u => u.id === bk.userId);
+            return `<tr><td>${user ? user.name : '?'}</td>
+              <td>${user ? user.phone : '?'}</td>
               <td>${bk.date}</td>
-              <td>${bus?bus.busNum+"<br>"+bus.route:"?"}</td>
-              <td>${bk.seat.map(x=>`<b>#${x}</b>`).join(' ')}</td>
-              <td>${bk.utr||"<em style='color:#e77922;'>Pending</em>"}</td></tr>`;
-          }).join(''):'<tr><td colspan="6" style="color:#fa5a5e;">No bookings yet</td></tr>'}
+              <td>${bus ? bus.busNum + '<br>' + bus.route : '?'}</td>
+              <td>${bk.seat.map(x => `<b>#${x}</b>`).join(' ')}</td>
+              <td>${bk.utr || "<em style='color:#e77922;'>Pending</em>"}</td></tr>`;
+          }).join('') : '<tr><td colspan="6" style="color:#fa5a5e;">No bookings yet</td></tr>'}
         </table>
-        <button class="main-btn" onclick="showStart()">Log out</button>
+        <button class="main-btn" onclick="showStart()" style="margin-top:1em;">Log out</button>
       `);
     }
-    function showDriverPanel(){
-      let myBuses = buses.filter(b=>b.driver===currSession.id);
+
+    function showDriverPanel() {
+      const myBuses = buses.filter(b => b.driver === currSession.id);
       setScreen(`
-        <img src="https://cdn-icons-png.flaticon.com/512/1603/1603847.png" class="banner"/>
+        <img src="https://cdn-icons-png.flaticon.com/512/1603/1603847.png" class="banner" />
         <h2>Driver Panel</h2>
-        ${myBuses.length?myBuses.map(b=>`
+        ${myBuses.length ? myBuses.map(b => `
           <div style="margin:.7em 0;font-weight:700;">
             <span>${b.busNum} | ${b.route} (${b.departure})</span>
             <button class="small-btn" onclick="runDriverLiveMap(${b.id})">Track</button>
           </div>
-        `).join(''):`<div style="color:#fa5a5e;">No bus assigned</div>`}
+        `).join('') : '<div style="color:#fa5a5e;">No bus assigned</div>'}
         <button class="main-btn" onclick="showStart()">Log out</button>
       `);
     }
-    function runDriverLiveMap(busId){showTrackPassengerBus(busId);}
-    // --- Map
-    let currMap=null, busAnim={}, markerObj;
-    function runBusMap(bus){
-      if(currMap)try{currMap.remove();}catch(e){}
-      currMap = L.map('live-map').setView(bus.route[0], 7);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(currMap);
-      busAnim[bus.id] = busAnim[bus.id]||{p:0,dir:1};
-      if(markerObj){currMap.removeLayer(markerObj);}
-      function animate(){
-        let p=busAnim[bus.id].p;
-        busAnim[bus.id].p+=0.029*busAnim[bus.id].dir;
-        if(busAnim[bus.id].p>=1){busAnim[bus.id].dir=-1; busAnim[bus.id].p=1;}
-        else if(busAnim[bus.id].p<=0){busAnim[bus.id].dir=1; busAnim[bus.id].p=0;}
-        let lat=bus.route[0][0]+(bus.route[1][0]-bus.route[0][0])*busAnim[bus.id].p,
-            lng=bus.route[0][1]+(bus.route[1][1]-bus.route[0][1])*busAnim[bus.id].p;
-        if(markerObj)currMap.removeLayer(markerObj);
-        markerObj=L.marker([lat,lng],{
-          icon:L.icon({iconUrl:"https://cdn-icons-png.flaticon.com/512/190/190677.png",iconSize:[40,40],iconAnchor:[20,40]})
-        }).addTo(currMap).bindTooltip(`<b>${bus.busNum}</b>`);
-        setTimeout(animate,1200);
+
+    function runDriverLiveMap(busId) {
+      showTrackPassengerBus(busId);
+    }
+
+    let currMap = null;
+    let busAnim = {};
+    let markerObj = null;
+
+    function runBusMap(bus) {
+      if (currMap) {
+        try { currMap.remove(); } catch (e) { /* ignore */ }
       }
-      L.polyline(bus.route,{color:bus.id%2?'#6159e4':'#16e596',weight:7,dashArray:"7,9"}).addTo(currMap);
+
+      const coords = routeCoordinates[bus.route] || [[28.6139, 77.2090], [26.9124, 75.7873]];
+      currMap = L.map('live-map').setView(coords[0], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(currMap);
+
+      busAnim[bus.id] = busAnim[bus.id] || { p: 0, dir: 1 };
+      if (markerObj) currMap.removeLayer(markerObj);
+
+      function animate() {
+        let p = busAnim[bus.id].p;
+        busAnim[bus.id].p += 0.029 * busAnim[bus.id].dir;
+
+        if (busAnim[bus.id].p >= 1) {
+          busAnim[bus.id].dir = -1;
+          busAnim[bus.id].p = 1;
+        } else if (busAnim[bus.id].p <= 0) {
+          busAnim[bus.id].dir = 1;
+          busAnim[bus.id].p = 0;
+        }
+
+        const lat = coords[0][0] + (coords[1][0] - coords[0][0]) * busAnim[bus.id].p;
+        const lng = coords[0][1] + (coords[1][1] - coords[0][1]) * busAnim[bus.id].p;
+
+        if (markerObj) currMap.removeLayer(markerObj);
+
+        markerObj = L.marker([lat, lng], {
+          icon: L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190677.png',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40]
+          })
+        }).addTo(currMap).bindTooltip(`<b>${bus.busNum}</b>`);
+
+        setTimeout(animate, 1200);
+      }
+
+      L.polyline(coords, { color: bus.id % 2 ? '#6159e4' : '#16e596', weight: 7, dashArray: '7,9' }).addTo(currMap);
       animate();
     }
-    // Open globally for back/forward
-    window.selectRole=selectRole;window.signupPassenger=signupPassenger;
-    window.loginPassenger=loginPassenger;window.loginDriver=loginDriver;window.loginAdmin=loginAdmin;
-    window.chooseRoutePanel=chooseRoutePanel;window.handleRouteChoose=handleRouteChoose;window.showBusList=showBusList;
-    window.selectBusForSeats=selectBusForSeats;window.renderSeats=renderSeats;
-    window.confirmSeatBook=confirmSeatBook;window.showPaymentPage=showPaymentPage;
-    window.submitPayment=submitPayment;window.showPassengerBookings=showPassengerBookings;
-    window.showTrackPassengerBus=showTrackPassengerBus;window.handleUserLogin=handleUserLogin;
-    window.showAdminPanel=showAdminPanel;window.showDriverPanel=showDriverPanel;window.runDriverLiveMap=runDriverLiveMap;
-    window.closePopup=closePopup;
+
+    buildDemoBuses();
+    showStart();
+
+    window.selectRole = selectRole;
+    window.signupPassenger = signupPassenger;
+    window.loginPassenger = loginPassenger;
+    window.loginDriver = loginDriver;
+    window.loginAdmin = loginAdmin;
+    window.chooseRoutePanel = chooseRoutePanel;
+    window.handleRouteChoose = handleRouteChoose;
+    window.showBusList = showBusList;
+    window.selectBusForSeats = selectBusForSeats;
+    window.renderSeats = renderSeats;
+    window.confirmSeatBook = confirmSeatBook;
+    window.showPaymentPage = showPaymentPage;
+    window.submitPayment = submitPayment;
+    window.showPassengerBookings = showPassengerBookings;
+    window.showTrackPassengerBus = showTrackPassengerBus;
+    window.handleUserLogin = handleUserLogin;
+    window.showAdminPanel = showAdminPanel;
+    window.showDriverPanel = showDriverPanel;
+    window.runDriverLiveMap = runDriverLiveMap;
+    window.closePopup = closePopup;
   </script>
 </body>
 </html>
